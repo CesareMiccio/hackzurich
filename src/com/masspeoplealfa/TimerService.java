@@ -190,10 +190,10 @@ public class TimerService extends Service
 			
 			} catch(ClientProtocolException e){
 				// TODO Auto-genereted catch block
-				Log.e("test","test5"+e.getMessage());
+				Log.e("error","error"+e.getMessage());
 			} catch(IOException e){
 				// TODO Auto-genereted catch block
-				Log.e("test","test6"+e.getMessage());
+				Log.e("error","error"+e.getMessage());
 			}
 			
 	        	return null;
