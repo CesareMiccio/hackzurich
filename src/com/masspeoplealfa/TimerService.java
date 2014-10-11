@@ -12,10 +12,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.StrictMode;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
@@ -29,7 +31,9 @@ import org.json.JSONObject;
 public class TimerService extends Service
 {
 	private static Timer timer = new Timer(); 
-    String latitude, longitude;
+    public static String latitude, longitude;
+    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+    
 
     public IBinder onBind(Intent arg0) 
     {
@@ -42,12 +46,12 @@ public class TimerService extends Service
           startService();
     }
 
+    
     private void startService()
     {           
 		timer.scheduleAtFixedRate(new mainTask(), 0, 5000);
 		obtainCoordinateGps();
 		updateLocationGps();
-		starting();
     }
 
     private class mainTask extends TimerTask
@@ -57,7 +61,8 @@ public class TimerService extends Service
             toastHandler.sendEmptyMessage(0);
             //obtainCoordinateGps();
         }
-    }    
+    }
+
 
     public void onDestroy() 
     {
@@ -205,5 +210,6 @@ public class TimerService extends Service
 				
 			};runnable.run();
 	}
+	
 
 }
