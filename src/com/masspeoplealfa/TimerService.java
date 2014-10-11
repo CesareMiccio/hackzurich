@@ -108,8 +108,8 @@ public class TimerService extends Service
 		}
 		catch(Exception e)
 		{	
-			latitude = ("&la=0.00000");
-			longitude = ("&lo=0.00000");	
+			latitude = ("0.00000");
+			longitude = ("0.00000");	
 			avviso.show();
 		}			
 	}
