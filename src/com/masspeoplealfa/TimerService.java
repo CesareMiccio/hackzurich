@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
@@ -46,7 +47,7 @@ public class TimerService extends Service
 		timer.scheduleAtFixedRate(new mainTask(), 0, 5000);
 		obtainCoordinateGps();
 		updateLocationGps();
-		
+		starting();
     }
 
     private class mainTask extends TimerTask
@@ -97,17 +98,6 @@ public class TimerService extends Service
 			latitudine.show();
 			longitudine.show();
 			
-			/*
-			String id = idTelephone();
-			
-			//CREAZIONE STRUTTURA DATI
-		
-			String text = "{\"id\":\""+ id + "\", \"long\":\""+ Longitudine + "\", \"lat\": \"" + Latitudine+ "\"}";
-			
-			Toast checkData = Toast.makeText(this, "check " + text, text.length());
-			checkData.show();
-			
-			JSONObject data = new JSONObject(text);*/
 		}
 		catch(Exception e)
 		{	
@@ -168,14 +158,15 @@ public class TimerService extends Service
 	}
 	public void sendData()
 	{
+		int time = 10000;
 		String path = "http://masspeople.herokuapp.com/user/position/andrea@wavein.ch";
 		String errorToast = "Richiesta non Inviata";
 		
-		path = (path+"&"+longitude+"&"+latitude);
+		path = (path+"/"+longitude+"/"+latitude);
 		Toast avviso=Toast.makeText(this, errorToast, Toast.LENGTH_LONG);
 		
 		HttpClient client = new DefaultHttpClient();
-		HttpPost get = new HttpPost(path);
+		HttpGet get = new HttpGet(path);
 		
 		ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo info = cm.getActiveNetworkInfo();
@@ -198,6 +189,22 @@ public class TimerService extends Service
 			avviso.show();
 		}
 
+	}
+	public void starting()
+	{		
+		final Handler handler = new Handler();
+		final int time = 10000;
+			final Runnable runnable = new Runnable() 
+			{
+			
+				@Override
+				public void run()
+				{					
+                    sendData();
+                    handler.postDelayed(this, time);           		
+				}
+				
+			};runnable.run();
 	}
 
 }
