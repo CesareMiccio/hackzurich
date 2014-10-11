@@ -158,7 +158,6 @@ public class TimerService extends Service
 	}
 	public void sendData()
 	{
-		int time = 10000;
 		String path = "http://masspeople.herokuapp.com/user/position/andrea@wavein.ch";
 		String errorToast = "Richiesta non Inviata";
 		
