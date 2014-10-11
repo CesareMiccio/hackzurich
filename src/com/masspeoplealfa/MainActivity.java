@@ -202,6 +202,8 @@ public class MainActivity extends Activity
 	                regid = gcm.register(SENDER_ID);
 	                msg = "Device registered, registration ID=" + regid;
 
+	                Log.i("info","informazioni"+msg);
+	                
 	                // You should send the registration ID to your server over HTTP,
 	                // so it can use GCM/HTTP or CCS to send messages to your app.
 	                // The request to your server should be authenticated if your app
