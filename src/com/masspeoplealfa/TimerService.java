@@ -19,6 +19,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.StrictMode;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.http.client.ClientProtocolException;
@@ -58,6 +59,7 @@ public class TimerService extends Service
     { 
         public void run() 
         {
+        	new SendDataTask().execute();
             toastHandler.sendEmptyMessage(0);
             //obtainCoordinateGps();
         }
@@ -161,39 +163,50 @@ public class TimerService extends Service
 		
 		return (uId);
 	}
-	public void sendData()
-	{
-		String path = "http://masspeople.herokuapp.com/user/position/andrea@wavein.ch";
-		String errorToast = "Richiesta non Inviata";
-		
-		path = (path+"/"+longitude+"/"+latitude);
-		Toast avviso=Toast.makeText(this, errorToast, Toast.LENGTH_LONG);
-		
-		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet(path);
-		
-		ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo info = cm.getActiveNetworkInfo();
-		
-		try
-		{	
+	
+	class SendDataTask extends AsyncTask<Void, Void, Void> {
+
+	    private Exception exception;
+
+	    protected Void doInBackground(Void... params) {
+	    		
+	    	
+	    	String path = "http://masspeople.herokuapp.com/user/position/andrea@wavein.ch";
+			String errorToast = "Richiesta non Inviata";
+			
+			path = (path+"/"+longitude+"/"+latitude);
+			//Toast avviso=Toast.makeText(this, errorToast, Toast.LENGTH_LONG);
+			
+			HttpClient client = new DefaultHttpClient();
+			HttpGet get = new HttpGet(path);
+			
+			//ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+			//NetworkInfo info = cm.getActiveNetworkInfo();
+			
+
 			try
 			{
 				client.execute(get);
 			
 			} catch(ClientProtocolException e){
 				// TODO Auto-genereted catch block
-				avviso.show();
+				Log.e("test","test5"+e.getMessage());
 			} catch(IOException e){
 				// TODO Auto-genereted catch block
-				avviso.show();
+				Log.e("test","test6"+e.getMessage());
 			}
-		}catch(Exception e)
-		{
-			avviso.show();
-		}
+			
+	        	return null;
+	        
+	    }
 
+	    protected void onPostExecute() {
+	        // TODO: check this.exception 
+	        // TODO: do something with the feed
+	    }
 	}
+	
+	
 	public void starting()
 	{		
 		final Handler handler = new Handler();
@@ -204,7 +217,7 @@ public class TimerService extends Service
 				@Override
 				public void run()
 				{					
-                    sendData();
+                    new SendDataTask().execute();
                     handler.postDelayed(this, time);           		
 				}
 				
