@@ -60,7 +60,6 @@ public class TimerService extends Service
         public void run() 
         {
         	new SendDataTask().execute();
-            toastHandler.sendEmptyMessage(0);
             //obtainCoordinateGps();
         }
     }
@@ -73,14 +72,7 @@ public class TimerService extends Service
           timer.cancel();
     }
 
-    private final Handler toastHandler = new Handler()
-    {
-        @Override
-        public void handleMessage(Message msg)
-        {
-            Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
-        }
-    };
+    
     
     /*Obtain the coordinates with the LocationManager. If the gps's coordinates there aren't come to us, the return will be a predefined coordinates
      * in this case will be Lat(0.00000) and Lon(0.00000)*/
