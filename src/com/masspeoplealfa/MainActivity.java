@@ -33,6 +33,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends Activity 
 {
@@ -67,6 +71,7 @@ public class MainActivity extends Activity
 		setContentView(R.layout.activity_main);
 		
 		startService();
+		cluster();
 		
 		mMap = ((MapFragment) fragmentManager.findFragmentById(R.id.map)).getMap();//invoke of map fragment by id from main xml file
 		
@@ -310,6 +315,14 @@ public class MainActivity extends Activity
 	    editor.putString(PROPERTY_REG_ID, regId);
 	    editor.putInt(PROPERTY_APP_VERSION, appVersion);
 	    editor.commit();
+	}
+	public void cluster()
+	{
+		  final LatLng MILANO = new LatLng(45.4641532,9.1900705);
+		  Marker milano = mMap.addMarker(new MarkerOptions()
+		                            .position(MILANO)
+		                            .title("")
+		                            .snippet("People: 400"));
 	}
 	
 }
