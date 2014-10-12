@@ -33,6 +33,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends Activity 
 {
@@ -70,7 +72,12 @@ public class MainActivity extends Activity
 		
 		mMap = ((MapFragment) fragmentManager.findFragmentById(R.id.map)).getMap();//invoke of map fragment by id from main xml file
 		
-		mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+		
+		CameraPosition cameraPosition = new CameraPosition.Builder()
+        .target(new LatLng(45.476097, 9.171209))      // Sets the center of the map to location user
+        .zoom(15)                   // Sets the zoom
+        .build();                   // Creates a CameraPosition from the builder
+		mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 		
 		if (checkPlayServices()) {
             gcm = GoogleCloudMessaging.getInstance(this);
