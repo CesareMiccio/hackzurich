@@ -17,6 +17,9 @@ import com.google.android.gms.gcm.*;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,9 +32,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.maps.*;
+
 public class MainActivity extends Activity 
 {
 
+	
+	
 	public static final String EXTRA_MESSAGE = "message";
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "0.0.0.0.1";	
@@ -40,16 +47,30 @@ public class MainActivity extends Activity
 	
 	static final String TAG = "GCMDemo";
 	
+	
+	GoogleMap mMap;
+	
 	GoogleCloudMessaging gcm;
 	Context context;
 	
 	String regid;
 	
+	FragmentManager fragmentManager = this.getFragmentManager();
+	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+		
+		
+		setContentView(R.layout.activity_main);
+		
 		startService();
+		
+		mMap = ((MapFragment) fragmentManager.findFragmentById(R.id.map)).getMap();//invoke of map fragment by id from main xml file
+		
+		mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 		
 		if (checkPlayServices()) {
             gcm = GoogleCloudMessaging.getInstance(this);
@@ -61,6 +82,10 @@ public class MainActivity extends Activity
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
+		
+	//		Fragment fragment = new BasicMapFragment();
+	//		fragmentTransaction.add(R.id.mapContainer, fragment);
+	//		fragmentTransaction.commit();
 	}
 
 	void startService()
