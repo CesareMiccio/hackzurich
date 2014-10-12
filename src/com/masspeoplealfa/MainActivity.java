@@ -33,8 +33,14 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.maps.*;
+
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 
 public class MainActivity extends Activity 
 {
@@ -46,6 +52,8 @@ public class MainActivity extends Activity
     private static final String PROPERTY_APP_VERSION = "0.0.0.0.1";	
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	private final static String SENDER_ID = "582951463448";
+	
+	final LatLng MILANO = new LatLng(45.4641532,9.1900705);
 	
 	static final String TAG = "GCMDemo";
 	
@@ -70,11 +78,13 @@ public class MainActivity extends Activity
 		
 		startService();
 		
+		
 		mMap = ((MapFragment) fragmentManager.findFragmentById(R.id.map)).getMap();//invoke of map fragment by id from main xml file
 		
+		cluster();
 		
 		CameraPosition cameraPosition = new CameraPosition.Builder()
-        .target(new LatLng(45.476097, 9.171209))      // Sets the center of the map to location user
+        .target(MILANO)      // Sets the center of the map to location user
         .zoom(15)                   // Sets the zoom
         .build();                   // Creates a CameraPosition from the builder
 		mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -317,6 +327,14 @@ public class MainActivity extends Activity
 	    editor.putString(PROPERTY_REG_ID, regId);
 	    editor.putInt(PROPERTY_APP_VERSION, appVersion);
 	    editor.commit();
+	}
+	public void cluster()
+	{
+		  
+		  Marker milano = mMap.addMarker(new MarkerOptions()
+		                            .position(MILANO)
+		                            .title("")
+		                            .snippet("People: 400"));
 	}
 	
 }
